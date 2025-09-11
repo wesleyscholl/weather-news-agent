@@ -2,13 +2,14 @@ import requests
 import json
 from datetime import datetime
 import re
+import os
 
 class SimpleAIAgent:
     def __init__(self):
         # You'll need to get free API keys for these services
-        self.weather_api_key = "YOUR_OPENWEATHER_API_KEY"  # Get from openweathermap.org
-        self.news_api_key = "YOUR_NEWS_API_KEY"  # Get from newsapi.org
-        
+        self.weather_api_key = os.environ.get("OPENWEATHER_API_KEY")  # Get from openweathermap.org
+        self.news_api_key = os.environ.get("NEWS_API_KEY")  # Get from newsapi.org
+
         # Agent's knowledge base
         self.capabilities = [
             "check weather",
