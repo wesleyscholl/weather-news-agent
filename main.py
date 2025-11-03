@@ -81,18 +81,21 @@ class SimpleAIAgent:
             else:
                 url = f"https://newsapi.org/v2/everything?q={topic}&apiKey={self.news_api_key}&sortBy=popularity"
             
-            response = requests.get(url)
+            response = requests.get(url, verify=False)
             data = response.json()
             
-            if response.status_code == 200 and data['articles']:
+            if response.status_code == 200 and 'articles' in data and data['articles']:
                 headlines = []
-                for article in data['articles'][:3]:  # Get top 3
+                for article in data['articles'][:5]:  # Get top 5
                     headlines.append(f"• {article['title']}")
                 return f"Latest news about {topic}:\n" + "\n".join(headlines)
             else:
-                return f"Sorry, I couldn't find news about {topic}"
-        except:
-            return "News service is currently unavailable"
+                if 'message' in data:
+                    return f"News API Error: {data['message']}"
+                else:
+                    return f"Sorry, I couldn't find news about {topic}. Status code: {response.status_code}"
+        except Exception as e:
+            return f"News service error: {str(e)}"
     
     def get_time(self):
         """Get current time"""
@@ -159,19 +162,15 @@ def main():
     print("Note: You'll need to add your API keys to make weather and news work!")
     print()
     
-    # Test cases
-    test_inputs = [
-        "Hello there!",
-        "What can you do?",
-        "What's the weather in Paris?",
-        "Get me news about technology",
-        "What time is it?",
-        "Calculate 15 * 8 + 4",
-        "Tell me a joke"  # This should trigger unknown intent
-    ]
-    
-    for test_input in test_inputs:
-        agent.respond(test_input)
+    # Interactive mode
+    print("Chat with the agent (type 'exit' to quit)")
+    while True:
+        user_input = input("\nPrompt: ")
+        if user_input.lower() in ['exit', 'quit', 'bye']:
+            print("Agent: Goodbye!")
+            break
+            
+        agent.respond(user_input)
         print("-" * 50)
 
 if __name__ == "__main__":
