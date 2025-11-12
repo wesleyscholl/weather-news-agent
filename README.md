@@ -1,5 +1,7 @@
 # 🌦️📰 Weather & News AI Agent
 
+**Status**: Lightweight educational AI agent demonstrating intent detection and API integration patterns - production-ready for basic use cases.
+
 A simple AI agent that demonstrates basic intent detection, API integration, and natural language understanding without complex LLM dependencies.
 
 ## Features
